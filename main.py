@@ -50,7 +50,7 @@ class BloomFilter:
 		working_hf.update(word)
 
 		# shake_128 is a variable length digest, we need to pass length
-		hf_digest = working_hf.digest(16) if working_hf.name == "shake_128" else working_hf.digest()
+		hf_digest = working_hf.digest(16) if "shake_" in working_hf.name else working_hf.digest()
 		# print(f"hf_digest: {hf_digest}")
 
 		return int.from_bytes(hf_digest, "big") % self.bits
@@ -94,9 +94,15 @@ def hash_functions(num_functions:int = None):
 	hash_functions = [
 		hl.md5(), hl.sha3_224(), hl.blake2s(),
 		hl.sha3_512(), hl.sha1(), hl.sha3_256(),
-		hl.blake2b(), hl.new("sm3"), hl.shake_128(),
+		hl.blake2b(), hl.shake_256(), hl.shake_128(),
 		hl.sha256()
 	]
+	# hash_functions = [
+	# 	hl.md5(), hl.sha3_224(), hl.blake2s(),
+	# 	hl.sha3_512(), hl.sha1(), hl.sha3_256(),
+	# 	hl.blake2b(), hl.new("sm3"), hl.shake_128(),
+	# 	hl.sha256()
+	# ]
 	return hash_functions[:num_functions] if num_functions else hash_functions
 
 """
